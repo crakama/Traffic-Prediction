@@ -7,12 +7,15 @@ object Shingling {
   def main(args: Array[String]): Unit = {
     var dataset = " "
     val documentsCorpus = new java.io.File("data").listFiles.filter(_.getName.endsWith(".sgm"))
-    timed( for (doc <- documentsCorpus) {
+
+     val value:Unit  = for (doc <- documentsCorpus) {
       using(io.Source.fromFile(doc,"iso-8859-1")) { source => {
-       // println(source.mkString)
         dataset = dataset + source.mkString
         noofDocs = noofDocs +1
-      }}})
+      }}
+      println(" Reading " + noofDocs + " documents took " + timed(value) + " ms")}
+
+
 
     print ("Transforming data...")
     getAllLinks(dataset)
@@ -30,8 +33,8 @@ object Shingling {
   def timed[A](block: => A) = {
     val t0 = System.currentTimeMillis
     val result = block
-
-    println(" Reading " + noofDocs + " documents took " + (System.currentTimeMillis - t0) + " ms")
+    val t1 = System.currentTimeMillis
+    println("Elapsed time: " + (t1 - t0) + "ms")
     result
   }
 
